@@ -1,0 +1,27 @@
+version: "3.2"
+services: 
+    users-service:
+        build: 
+            context: .
+            dockerfile: './Dockerfile'
+        volumes: 
+            - ./:/opt/app
+        ports:
+            - "8080:8080"
+        depends_on: 
+            - users-service-db
+        environment: 
+            SA_PASSWORD: "!abc1234"
+            ACCEPT_EULA: "Y"
+
+    users-service-db:
+        environment: 
+            - ACCEPT_EULA=Y
+            - MSSQL_DB=PROFILE_DB
+            - MSSQL_USER=DuyBao
+            - MSSQL_PASSWORD=DuyBao123
+            - SA_PASSWORD=DuyBao123
+
+        image: mcmoe/mssqldocker
+        ports: 
+            - 0.0.0.0:1435:1433
